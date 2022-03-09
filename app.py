@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request
+from flask import Flask, appcontext_popped, flash, render_template, url_for, request
 from werkzeug.security import generate_password_hash, check_password_hash
 import pyodbc
 
@@ -10,3 +10,14 @@ cursor = pyodbc.connect('Driver={SQL Server};'
                       'Database=BankSystemWebAppDB;'
                       'Trusted_Connection=yes;', 
                       autocommit= True).cursor()
+
+
+app = Flask(__name__)
+
+@app.route("/")
+def index():
+    return render_template("hello.html")
+
+app.run()
+
+#HTML Templates go in templates folder, CSS and JS go in static
