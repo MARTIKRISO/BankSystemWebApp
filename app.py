@@ -16,7 +16,29 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    return render_template("hello.html")
+   pass
+
+@app.route("/register")
+def index():
+   pass
+
+@app.route("/login")
+def index():
+   pass
+
+@app.route("/addfunds")
+def index():
+   pass
+
+@app.route("/transerfunds")
+def index():
+   pass
+
+@app.route("/changepassword")
+def index():
+   pass
+
+
 
 app.run()
 
