@@ -1,0 +1,2 @@
+font color: #bdd0d9
+background color: #282828
