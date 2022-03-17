@@ -1,5 +1,4 @@
 from flask import Flask, appcontext_popped, flash, render_template, url_for, request
-from werkzeug.security import generate_password_hash, check_password_hash
 import Service
 
 
