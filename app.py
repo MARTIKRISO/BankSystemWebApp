@@ -34,7 +34,7 @@ def addfunds():
 def transferfunds():
    pass
 
-@app.route("/changepassword")
+@app.route("/reset")
 def reset():
    pass
 
