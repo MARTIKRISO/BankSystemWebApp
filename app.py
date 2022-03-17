@@ -1,41 +1,41 @@
 from flask import Flask, appcontext_popped, flash, render_template, url_for, request
 from werkzeug.security import generate_password_hash, check_password_hash
-import pyodbc
-
-ConnectionString = "Server=localhost/SQLEXPRESS;Database=BankSystemWebAppDB;Trusted_Connection=True;" #Connection string for DB
-
-#Creating Database connection
-cursor = pyodbc.connect('Driver={SQL Server};'
-                      'Server=localhost\SQLEXPRESS;'
-                      'Database=BankSystemWebAppDB;'
-                      'Trusted_Connection=yes;', 
-                      autocommit= True).cursor()
+import Service
 
 
+dbcontext = Service()
 app = Flask(__name__)
 
 @app.route("/")
 def index():
-   pass
+   return render_template('index.html')
 
-@app.route("/register")
-def index():
-   pass
+@app.route("/login", methods = ["GET", "POST"])
+def login():
+   if request.method == "GET":
+      return render_template("login.html")
+   else:
+      #Request is POST, do the db stuff
+      pass #for now
 
-@app.route("/login")
-def index():
-   pass
+@app.route("/register", methods = ["GET", "POST"])
+def register():
+   if request.method == "GET":
+      return render_template("register.html")
+   else:
+      #Request is POST, do the db stuff
+      pass # for now
 
 @app.route("/addfunds")
-def index():
+def addfunds():
    pass
 
 @app.route("/transerfunds")
-def index():
+def transferfunds():
    pass
 
 @app.route("/changepassword")
-def index():
+def reset():
    pass
 
 
