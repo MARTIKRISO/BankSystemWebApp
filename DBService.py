@@ -49,6 +49,19 @@ class DBService:
             return None
 
         #TODO: Finish this
+    
+    def DeleteUser(self, **kwargs):
+        SSN = kwargs.get("ssn")
+        userpassword = kwargs.get("pwd")
+        user = self.FindUser(ssn=SSN, pwd=userpassword)
+
+        if user is not None:
+            self.cursor.execute(f"DELETE FROM dbo.Users WHERE SSN='{SSN}'")
+            return 0
+        else:
+            return -1
+
+
         
 
 
