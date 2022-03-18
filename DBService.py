@@ -47,9 +47,7 @@ class DBService:
             return user
         else:
             return None
-
-        #TODO: Finish this
-    
+            
     def DeleteUser(self, **kwargs):
         SSN = kwargs.get("ssn")
         userpassword = kwargs.get("pwd")
