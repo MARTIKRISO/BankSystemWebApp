@@ -1,0 +1,18 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="{{ url_for('static', filename='common.css') }}">
+        <title>Client Page</title>
+    </head>
+    <body>
+
+        <form class="box" action="">
+            <h1>Select Option</h1>
+            <button type="button" onclick="window.location.href='{{ url_for( 'addfunds') }}';">Add Funds</button>
+            <button type="button" onclick="window.location.href='{{ url_for( 'transferfunds') }}';">Transfer Funds</button>
+            <button type="button" onclick="window.location.href='{{ url_for( 'index') }}';">Back</button>
+        </form>
+    
+    
+    </body>
+</html>

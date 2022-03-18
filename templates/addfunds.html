@@ -1,0 +1,18 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="{{ url_for('static', filename='common.css') }}">
+        <title>Add Funds</title>
+    </head>
+    <body>
+
+        <form class="box" action="">
+            <h1>Select Amount</h1>
+            <input type="text" name="Amount" placeholder="" required>
+            <input type="submit" name="Add" value="Addfunds">
+            <button type="button" onclick="window.location.href='{{ url_for( 'ClientPage') }}';">Back</button>
+        </form>
+    
+    
+    </body>
+</html>
