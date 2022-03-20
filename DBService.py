@@ -24,13 +24,14 @@ class DBService:
         lname = kwargs.get("lname")
         SSN = kwargs.get("ssn")
         pwd = generate_password_hash(kwargs.get("pwd"))
-        if mname is not None:
-            args = "(FirstName, MiddleName, LastName, SSN, Pwd)"
-            values = f"('{fname}', '{mname}', '{lname}', '{SSN}', '{pwd}')"
-        else:
-            args = "(FirstName, LastName, SSN, Pwd)"
-            values = f"('{fname}', '{mname}', '{lname}', '{SSN}', '{pwd}')"
-        
+        if not self.UserExists(SSN):
+            if mname is not None:
+                args = "(FirstName, MiddleName, LastName, SSN, Pwd)"
+                values = f"('{fname}', '{mname}', '{lname}', '{SSN}', '{pwd}')"
+            else:
+                args = "(FirstName, LastName, SSN, Pwd)"
+                values = f"('{fname}', '{lname}', '{SSN}', '{pwd}')"
+            
         self.cursor.execute(f"INSERT dbo.Users {args} VALUES {values}")
         self.cursor.commit()
     
@@ -47,6 +48,25 @@ class DBService:
             return user
         else:
             return None
+    
+    def LookupUser(self, id):
+        self.cursor.execute(f"SELECT * FROM dbo.Users WHERE id = '{id}'")
+        user = self.cursor.fetchone()
+        return user
+    
+    def ListAccounts(self, id):
+        self.cursor.execute(f"SELECT dbo.BankAccounts.ID, dbo.BankAccounts.Balance FROM dbo.Users INNER JOIN dbo.BankAccounts ON dbo.Users.ID = dbo.BankAccounts.OwnerID WHERE OwnerID = {id};")
+
+        field_names = [i[0] for i in self.cursor.description]
+        field_names = ', '.join(field_names)
+        fetched_data = self.cursor.fetchall()
+        data = [tuple(rows) for rows in fetched_data]
+        return tuple(data)
+
+    def UserExists(self, ssn):
+        self.cursor.execute(f"SELECT * FROM dbo.Users WHERE SSN = '{ssn}'")
+
+        return self.cursor.fetchone() != None
             
     def DeleteUser(self, **kwargs):
         SSN = kwargs.get("ssn")
