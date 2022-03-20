@@ -73,7 +73,7 @@ class DBService:
 #=================================End User Methods=====================================
 #=================================Account Methods======================================
     def ListAccounts(self, id):
-        self.cursor.execute(f"SELECT dbo.BankAccounts.ID, dbo.BankAccounts.Balance FROM dbo.Users INNER JOIN dbo.BankAccounts ON dbo.Users.ID = dbo.BankAccounts.OwnerID WHERE OwnerID = {id};")
+        self.cursor.execute(f"SELECT dbo.BankAccounts.Name, dbo.BankAccounts.ID, dbo.BankAccounts.Balance FROM dbo.Users INNER JOIN dbo.BankAccounts ON dbo.Users.ID = dbo.BankAccounts.OwnerID WHERE OwnerID = {id};")
 
         field_names = [i[0] for i in self.cursor.description]
         field_names = ', '.join(field_names)
@@ -83,8 +83,8 @@ class DBService:
 
     def CreateAccount(self, id, **kwargs):
         name = kwargs.get("accname")
-        money = kwargs.get('bal')
+        money = kwargs.get("bal")
         ownerid = id
         values = f"('{name}', '{money}', '{ownerid}')"
-        self.cursor.execute(f"INSERT dbo.BankAccounts(Name, Balance, OwnerID) VALUES ('{values}') ")
+        self.cursor.execute(f"INSERT dbo.BankAccounts(Name, Balance, OwnerID) VALUES {values} ")
 

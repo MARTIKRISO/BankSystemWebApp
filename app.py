@@ -46,10 +46,15 @@ def register():
       return "done"
 @app.route("/createaccount", methods = ["GET", "POST"])
 def createaccount():
-   ACCNAME = request.form.get("accname")
-   BAL = request.form.get("bal")
-   ID = request.cookies.get('accid')
-   dbcontext.CreateAccount(ID, bal=BAL, accname=ACCNAME)
+   if request.method == "GET":
+      return render_template("CreateAcc.html")
+   else:
+      ACCNAME = request.form.get("accname")
+      BAL = request.form.get("bal")
+      ID = request.cookies.get('accid')
+      dbcontext.CreateAccount(ID, bal=BAL, accname=ACCNAME)
+
+      return "done"
 
 @app.route("/addfunds")
 def addfunds():
@@ -88,7 +93,7 @@ def delete():
 def accounts():
    id = request.cookies.get('accid')
    data = dbcontext.ListAccounts(id)
-   headings = ("Account ID", "Funds")
+   headings = ("Account Name", "Account ID", "Funds")
    return render_template("accounts.html", headings = headings, data = data)
 
 

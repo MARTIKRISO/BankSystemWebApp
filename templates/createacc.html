@@ -6,11 +6,11 @@
     </head>
     <body>
 
-        <form class="box" action="">
+        <form class="box" action="/createaccount" method="POST">
             <h1>Create Account</h1>
             <input type="text" name="accname" placeholder="Account Name" required>
             <input type="text" name="bal" placeholder="Balance" required>
-            <input type="submit" name="Add" value="CreateAccount">
+            <button type="submit" onclick="window.location.href='{{ url_for( 'user') }}';">Create Account</button>
             
         </form>
     

@@ -9,5 +9,4 @@ serv = DBService.DBService()
 #serv.DeleteUser(ssn="1234567891", pwd="123martin")
 #print(serv.UserExists("1234567891"))
 
-print(serv.ListAccounts(3))
-
+print(serv.ListAccounts(6))
