@@ -41,13 +41,30 @@ def register():
       LNAME = request.form.get("lname")
       SSN = request.form.get("SSN")
       PWD = request.form.get("pwd")
-      dbcontext.CreateUser(fname=FNAME, lname=LNAME, ssn=SSN, pwd = PWD)
+      dbcontext.CreateUser(fname=FNAME, mname=MNAME, lname=LNAME, ssn=SSN, pwd = PWD)
 
       return "done"
+@app.route("/createaccount", methods = ["GET", "POST"])
+def createaccount():
+   ACCNAME = request.form.get("accname")
+   BAL = request.form.get("bal")
+   ID = request.cookies.get('accid')
+   dbcontext.CreateAccount(ID, bal=BAL, accname=ACCNAME)
 
 @app.route("/addfunds")
 def addfunds():
-   pass
+   if request.method == "GET":
+      return render_template("register.html")
+   else:
+      MNAME = None
+      FNAME = request.form.get("fname")
+      MNAME = request.form.get("mname")
+      LNAME = request.form.get("lname")
+      SSN = request.form.get("SSN")
+      PWD = request.form.get("pwd")
+      dbcontext.CreateUser(fname=FNAME, mname=MNAME, lname=LNAME, ssn=SSN, pwd = PWD)
+
+      return "done"
 
 @app.route("/transerfunds")
 def transferfunds():
