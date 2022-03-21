@@ -58,18 +58,7 @@ def createaccount():
 
 @app.route("/addfunds")
 def addfunds():
-   if request.method == "GET":
-      return render_template("register.html")
-   else:
-      MNAME = None
-      FNAME = request.form.get("fname")
-      MNAME = request.form.get("mname")
-      LNAME = request.form.get("lname")
-      SSN = request.form.get("SSN")
-      PWD = request.form.get("pwd")
-      dbcontext.CreateUser(fname=FNAME, mname=MNAME, lname=LNAME, ssn=SSN, pwd = PWD)
-
-      return "done"
+   
 
 @app.route("/transerfunds")
 def transferfunds():
