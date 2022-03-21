@@ -56,8 +56,16 @@ def createaccount():
 
       return "done"
 
-@app.route("/addfunds")
+@app.route("/addfunds", methods = ["GET", "POST"])
 def addfunds():
+   if request.method == "GET":
+      return render_template("AddFunds.html")
+   else:
+      NAMEORID = request.form.get("nameid")
+      VALUE = request.form.get("value")
+      dbcontext.ChangeBalance(NAMEORID, VALUE, request.cookies.get('accid'))
+
+      return "done"
    
 
 @app.route("/transerfunds")

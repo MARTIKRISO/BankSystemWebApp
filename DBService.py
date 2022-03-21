@@ -1,4 +1,3 @@
-from curses.ascii import isnumeric
 import pyodbc
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -89,11 +88,10 @@ class DBService:
         values = f"('{name}', '{money}', '{ownerid}')"
         self.cursor.execute(f"INSERT dbo.BankAccounts(Name, Balance, OwnerID) VALUES {values} ")
 
-    def ChangeBalance(self, nameorid, value):
-        if isnumeric(nameorid):
-            self.cursor.execute(f"UPDATE dbo.BankAccounts SET dbo.BankAccounts.Balance=dbo.BankAccounts.Balance+{value} WHERE dbo.BankAccounts.ID = '{nameorid}'")
+    def ChangeBalance(self, nameorid, value, id):
+        if nameorid.isnumeric():
+            self.cursor.execute(f"UPDATE dbo.BankAccounts SET dbo.BankAccounts.Balance=dbo.BankAccounts.Balance+{value} WHERE dbo.BankAccounts.ID = '{nameorid}' AND dbo.BankAccounts.OwnerID = '{id}'")
         else:
-            #got name
-            pass
+            self.cursor.execute(f"UPDATE dbo.BankAccounts SET dbo.BankAccounts.Balance=dbo.BankAccounts.Balance+{value} WHERE dbo.BankAccounts.Name = '{nameorid}' AND dbo.BankAccounts.OwnerID = '{id}'")
 
 
