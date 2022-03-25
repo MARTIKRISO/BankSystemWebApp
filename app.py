@@ -1,6 +1,4 @@
-from asyncio.windows_events import NULL
-from os import access
-from flask import Flask, appcontext_popped, flash, make_response, render_template, url_for, request, redirect
+from flask import Flask, flash, make_response, render_template, url_for, request, redirect
 import DBService
 
 
@@ -8,6 +6,7 @@ dbcontext = DBService.DBService()
 app = Flask(__name__)
 
 @app.route("/")
+@app.route("/index")
 def index():
    return render_template('index.html')
 
@@ -41,9 +40,9 @@ def register():
       LNAME = request.form.get("lname")
       SSN = request.form.get("SSN")
       PWD = request.form.get("pwd")
-      dbcontext.CreateUser(fname=FNAME, mname=MNAME, lname=LNAME, ssn=SSN, pwd = PWD)
+      status = dbcontext.CreateUser(fname=FNAME, mname=MNAME, lname=LNAME, ssn=SSN, pwd = PWD)
 
-      return "done"
+      return render_template("Result.html", message = status, flag = 1)
 @app.route("/createaccount", methods = ["GET", "POST"])
 def createaccount():
    if request.method == "GET":
@@ -52,9 +51,8 @@ def createaccount():
       ACCNAME = request.form.get("accname")
       BAL = request.form.get("bal")
       ID = request.cookies.get('accid')
-      dbcontext.CreateAccount(ID, bal=BAL, accname=ACCNAME)
-
-      return "done"
+      status = dbcontext.CreateAccount(ID, bal=BAL, accname=ACCNAME)
+      return render_template("Result.html", message = status)
 
 @app.route("/addfunds", methods = ["GET", "POST"])
 def addfunds():
@@ -63,18 +61,22 @@ def addfunds():
    else:
       NAMEORID = request.form.get("nameid")
       VALUE = request.form.get("value")
-      dbcontext.ChangeBalance(NAMEORID, VALUE, request.cookies.get('accid'))
+      status = dbcontext.ChangeBalance(NAMEORID, VALUE, request.cookies.get('accid'))
 
-      return "done"
+   return render_template("Result.html", message = status)
    
 
-@app.route("/transerfunds")
+@app.route("/transferfunds", methods = ["GET", "POST"])
 def transferfunds():
-   pass
+   if request.method == "GET":
+      return render_template("TransferFunds.html")
+   else:
+      SOURCENAMEORID = request.form.get("source")
+      DESTINATIONNAMEORID = request.form.get("dest")
+      VALUE = request.form.get("money")
+      status = dbcontext.TransferFunds(request.cookies.get('accid'), source = SOURCENAMEORID, dest = DESTINATIONNAMEORID, value=VALUE)
 
-@app.route("/reset")
-def reset():
-   pass
+      return render_template("Result.html", message = status)
 
 @app.route("/user")
 def user():
@@ -82,9 +84,6 @@ def user():
    user = dbcontext.LookupUser(id)
    return render_template("User.html", fname = user[0], lname = user[2])
 
-@app.route("/delete")
-def delete():
-   pass
 
 @app.route("/accounts")
 def accounts():

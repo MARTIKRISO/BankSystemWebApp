@@ -1,0 +1,25 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="{{ url_for('static', filename='common.css') }}">
+        <title>{{ message }}</title>
+    </head>
+    <body>
+        <form class="box">
+            {% if message == "success" %}
+                <h1>Operation Successful!</h1>
+            {% elif message == "fail" %}
+                <h1>Operation Failed!<br>Please try again later!</h1>
+            {% else %}
+                <h1>Operation undefined!<br>Please contact support!</h1>
+            {% endif %}
+
+            {% if flag == 1 %}
+                <button type="button" onclick="window.location.href='{{ url_for( 'login') }}';">Log In</button>
+            {% else %}
+                <button type="button" onclick="window.location.href='{{ url_for( 'user') }}';">Return to User Menu</button>
+            {% endif %}       
+            <button type="button" onclick="window.location.href='{{ url_for( 'index') }}';">Return to Main Menu</button>
+        </form>
+    </body>
+</html>

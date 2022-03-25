@@ -34,7 +34,11 @@ class DBService:
                 values = f"('{fname}', '{lname}', '{SSN}', '{pwd}')"
             
         self.cursor.execute(f"INSERT dbo.Users {args} VALUES {values}")
-        self.cursor.commit()
+        if self.cursor.rowcount != 0:
+            return "success"
+        
+        return "fail"
+        
     
     def FindUser(self, **kwargs):
         
@@ -86,7 +90,11 @@ class DBService:
         money = kwargs.get("bal")
         ownerid = id
         values = f"('{name}', '{money}', '{ownerid}')"
-        self.cursor.execute(f"INSERT dbo.BankAccounts(Name, Balance, OwnerID) VALUES {values} ")
+        self.cursor.execute(f"INSERT dbo.BankAccounts(Name, Balance, OwnerID) VALUES {values}")
+        if self.cursor.rowcount != 0:
+            return "success"
+        
+        return "fail"
 
     def ChangeBalance(self, nameorid, value, id):
         if nameorid.isnumeric():
@@ -94,4 +102,28 @@ class DBService:
         else:
             self.cursor.execute(f"UPDATE dbo.BankAccounts SET dbo.BankAccounts.Balance=dbo.BankAccounts.Balance+{value} WHERE dbo.BankAccounts.Name = '{nameorid}' AND dbo.BankAccounts.OwnerID = '{id}'")
 
+        if self.cursor.rowcount != 0:
+            return "success"
+        
+        return "fail"
 
+    def TransferFunds(self, id, **kwargs):
+        source = kwargs.get("source")
+        dest = kwargs.get("dest")
+        value = int(kwargs.get("value"))
+
+        if source.isnumeric():
+            self.cursor.execute(f"UPDATE dbo.BankAccounts SET dbo.BankAccounts.Balance=dbo.BankAccounts.Balance-{value} WHERE dbo.BankAccounts.ID = '{source}' AND dbo.BankAccounts.OwnerID = '{id}'")
+        else:
+            self.cursor.execute(f"UPDATE dbo.BankAccounts SET dbo.BankAccounts.Balance=dbo.BankAccounts.Balance-{value} WHERE dbo.BankAccounts.Name = '{source}' AND dbo.BankAccounts.OwnerID = '{id}'")
+        if self.cursor.rowcount != 0:
+            if dest.isnumeric():
+                self.cursor.execute(f"UPDATE dbo.BankAccounts SET dbo.BankAccounts.Balance=dbo.BankAccounts.Balance+{value} WHERE dbo.BankAccounts.ID = '{dest}'")
+            else:
+                self.cursor.execute(f"UPDATE dbo.BankAccounts SET dbo.BankAccounts.Balance=dbo.BankAccounts.Balance+{value} WHERE dbo.BankAccounts.Name = '{dest}'")
+            
+            return "success"
+        
+        return "fail"
+
+        
